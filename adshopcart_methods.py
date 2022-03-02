@@ -141,6 +141,105 @@ def delete_account():
     print(f"-----Delete user account passed----- deleted user account : {locators.user_name}")
 
 
+def check_categories():
+    assert driver is not None
+    assert driver.current_url == locators.advantage_shopping_cart_url
+    # assert driver.find_element(By.XPATH, "//span[text()='SPEAKERS']").is_displayed()
+    # assert driver.find_element(By.XPATH, "//span[text()='TABLETS']").is_displayed()
+    # assert driver.find_element(By.XPATH, "//span[text()='LAPTOPS']").is_displayed()
+    # assert driver.find_element(By.XPATH, "//span[text()='MICE']").is_displayed()
+    # assert driver.find_element(By.XPATH, "//span[text()='HEADPHONES']").is_displayed()
+
+    driver.find_element(By.XPATH, "//span[text()='SPEAKERS']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.speaker_category_url
+    assert driver.find_element(By.XPATH, "//h3[contains(., 'SPEAKERS')]").is_displayed()
+    driver.find_element(By.XPATH, "//a[@href='#/']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.advantage_shopping_cart_url
+
+    driver.find_element(By.XPATH, "//span[text()='TABLETS']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.tablets_category_url
+    assert driver.find_element(By.XPATH, "//h3[contains(., 'TABLETS')]").is_displayed()
+    driver.find_element(By.XPATH, "//a[@href='#/']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.advantage_shopping_cart_url
+
+    driver.find_element(By.XPATH, "//span[text()='LAPTOPS']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.laptops_category_url
+    assert driver.find_element(By.XPATH, "//h3[contains(., 'LAPTOPS')]").is_displayed()
+    driver.find_element(By.XPATH, "//a[@href='#/']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.advantage_shopping_cart_url
+
+    driver.find_element(By.XPATH, "//span[text()='MICE']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.mice_category_url
+    assert driver.find_element(By.XPATH, "//h3[contains(., 'MICE')]").is_displayed()
+    driver.find_element(By.XPATH, "//a[@href='#/']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.advantage_shopping_cart_url
+
+    driver.find_element(By.XPATH, "//span[text()='HEADPHONES']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.headphone_category_url
+    assert driver.find_element(By.XPATH, "//h3[contains(., 'HEADPHONES')]").is_displayed()
+    driver.find_element(By.XPATH, "//a[@href='#/']").click()
+    sleep(0.25)
+    assert driver.current_url == locators.advantage_shopping_cart_url
+
+    print("-----Check categories passed-----Navigate to urls successfully")
+
+
+def check_main_logo():
+    assert driver is not None
+    assert driver.find_element(By.XPATH, "//*[local-name()='svg' and @id='Layer_1']/*[local-name()='path']").is_displayed()
+    assert driver.find_element(By.XPATH, "//span[text()='dvantage']").is_displayed()
+    assert driver.find_element(By.XPATH, "//span[text()='DEMO']").is_displayed()
+    print("-----Check main logo passed-----Displayed properly")
+
+
+def check_top_navi_menu():
+    assert driver is not None
+    assert driver.current_url == locators.advantage_shopping_cart_url
+    driver.find_element(By.XPATH, "//a[text()='SPECIAL OFFER']").click()
+    sleep(1)
+    driver.find_element(By.XPATH, "//a[text()='POPULAR ITEMS']").click()
+    sleep(1)
+    driver.find_element(By.XPATH, "//a[text()='CONTACT US']").click()
+    sleep(1)
+    driver.find_element(By.XPATH, "//a[text()='OUR PRODUCTS']").click()
+    sleep(1)
+    print("-----Check top navi menu passed-----Clickable")
+
+
+def check_contact_form():
+    assert driver is not None
+    assert driver.current_url == locators.advantage_shopping_cart_url
+
+    # check title, that send is disabled at the beginning.
+    assert driver.find_element(By.XPATH, "//h1[text()='CONTACT US']").is_displayed()
+    assert not driver.find_element(By.ID, "send_btnundefined").is_enabled()
+
+    # fill in mandatory fields.
+    driver.find_element(By.NAME, "subjectTextareaContactUs").send_keys(locators.subject)
+    driver.find_element(By.NAME, "emailContactUs").send_keys(locators.email)
+    assert driver.find_element(By.ID, "send_btnundefined").is_enabled()
+
+    # fill in optional fields.
+    Select(driver.find_element(By.NAME, "categoryListboxContactUs")).select_by_visible_text("Laptops")
+    Select(driver.find_element(By.NAME, "productListboxContactUs")).select_by_visible_text("HP ENVY - 17t Touch Laptop")
+
+    # click send button and check behavior
+    driver.find_element(By.ID, "send_btnundefined").click()
+    sleep(0.5)
+    assert driver.find_element(By.XPATH, "//a[text()=' CONTINUE SHOPPING ']").is_displayed()
+
+    print(f"-----Check contact form passed-----Submitted message with email: {locators.email}, subject: {locators.subject}")
+
+
 def log_fake_data():
     old_instance = sys.stdout
     log_file = open('message.log', 'w')  # 'a'
